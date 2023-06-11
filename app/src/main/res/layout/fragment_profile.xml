@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:gravity="center|top"
+    android:layout_margin= "16dp"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ProfileFragment">
+
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textColor="#3E51BC"
+        android:gravity="center"
+        android:text="ABC.IN PVT. LTD."
+        android:layout_marginBottom="20dp"/>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:padding="12dp">
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="#3E51BC"
+                    android:text="Welcome :"
+                    android:paddingRight="4dp"
+                    android:layout_weight=".60"/>
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:gravity="center|left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:textSize="15dp"
+                    android:text="Name"
+                    android:layout_weight=".40"
+                    android:textAllCaps="true"
+                    android:paddingLeft="2dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:text="abc@gmail.com"
+                android:padding="4dp"
+                android:layout_weight=".35"/>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:padding="10dp">
+
+
+
+            <DigitalClock
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tv_intime"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:text="--:--"
+                android:paddingRight="4dp"
+                android:layout_marginTop="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:textColor="#ffff"
+                android:background="@drawable/button"
+                android:id="@+id/mark_attendance"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Mark Attendance"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:textColor="#ffff"
+            android:id="@+id/btn_view_my_attendance"
+            android:padding="10dp"
+            android:layout_weight=".5"
+            android:layout_marginRight="6dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/button"
+            android:text="View \nRecords"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:textColor="#ffff"
+            android:id="@+id/btn_change_pass"
+            android:padding="10dp"
+            android:layout_weight=".5"
+            android:layout_marginLeft="6dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/button"
+            android:text="Change\nPassword"/>
+
+    </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/admin_controls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:textColor="#ffff"
+                    android:id="@+id/manage_emp"
+                    android:padding="10dp"
+                    android:layout_weight=".5"
+                    android:layout_marginRight="6dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/button"
+                    android:text="Manage\nEmployees"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:textColor="#ffff"
+                    android:id="@+id/change_qrcode"
+                    android:padding="10dp"
+                    android:layout_weight=".5"
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/button"
+                    android:text="Change\nQR Code"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:textColor="#ffff"
+        android:id="@+id/btn_logout"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/button"
+        android:text="Logout"/>
+
+</LinearLayout>
+

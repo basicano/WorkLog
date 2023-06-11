@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Attendance5June</string>
+    <string name="pref_name">AttendancePreferences</string>
+    <string name="is_logged_in">is_logged_in</string>
+    <string name="pref_email">email</string>
+    <string name="pref_password">password</string>
+    <string name="pref_user_name">user_name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
