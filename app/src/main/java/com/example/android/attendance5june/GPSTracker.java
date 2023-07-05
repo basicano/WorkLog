@@ -50,9 +50,13 @@ public class  GPSTracker extends Service implements LocationListener {
 
     }
 
+    // Method to check if the location permission is granted
     public boolean checkPermission(Context context){
+        // Check the Android API version
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= Build.VERSION_CODES.LOLLIPOP) {
+            
+            // If the permission is not granted, show a dialog to prompt the user to enable GPS
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     showSettingsAlert();
@@ -68,14 +72,15 @@ public class  GPSTracker extends Service implements LocationListener {
         }
     }
 
+    // Method to show a dialog asking the user to enable GPS
     public void showSettingsAlert() {
-        // Setting DialogHelp Title
+        // Create an AlertDialog with the appropriate title and message
         alertDialog.setTitle("GPS is required");
 
         // Setting DialogHelp Message
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
 
-        // On pressing Settings button
+        // Handle the positive button click to open the device's location settings
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -85,7 +90,7 @@ public class  GPSTracker extends Service implements LocationListener {
                     }
                 });
 
-        // on pressing cancel button
+        // Handle the negative button click to cancel the dialog
         alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -96,6 +101,7 @@ public class  GPSTracker extends Service implements LocationListener {
         alertDialog.show();
     }
 
+    // Method to get the current device location
     public Location getLocation(){
         if(!result){
             result  = checkPermission(context);
@@ -104,11 +110,14 @@ public class  GPSTracker extends Service implements LocationListener {
             }
         }
         try{
+            // Initialize the LocationManager and check if GPS and network providers are enabled
             locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 //            boolean backgroundLocationPermissionApproved = ActivityCompat.checkSelfPermission(this, permission.ACCESS_BACKGROUND_LOCATION);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             Log.e(TAG, isGPSEnabled+" "+isNetworkEnabled);
+
+            // If both providers are disabled, request permission to access the location
             if(!isGPSEnabled && !isNetworkEnabled){
                 int requestPermission = 50;
                 if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -119,8 +128,10 @@ public class  GPSTracker extends Service implements LocationListener {
                 }
             }
             else{
+                
                 this.canGetLocation = true;
                 if(isNetworkEnabled){
+                    // Request location updates from the network provider
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     if(locationManager != null){
@@ -135,6 +146,7 @@ public class  GPSTracker extends Service implements LocationListener {
                 }
                 else{
                     if(location ==null){
+                        // Request location updates from the GPS provider
 //                        Log.e(TAG, "failed to get location via network");
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
@@ -157,17 +169,20 @@ public class  GPSTracker extends Service implements LocationListener {
         return location;
     }
 
+    // IBinder onBind method required for Service implementation
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    // LocationListener callback when the location is changed
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
     }
 
+    // Getter methods for latitude and longitude
     public double getLatitude() {
         if (location != null) {
             latitude = location.getLatitude();
