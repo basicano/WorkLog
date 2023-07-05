@@ -1,9 +1,11 @@
 package com.example.android.attendance5june;
 
+// These lines import necessary classes and libraries for the Android application, including UI components, JSON handling, and shared preferences.
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+// These lines import necessary classes and libraries for the Android application, including UI components, JSON handling, and shared preferences
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,8 +29,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+// defines a class named RegisterFragment that extends the Fragment class and implements the VolleyJsonResponseListener interface.
 public class  RegisterFragment extends Fragment implements VolleyJsonResponseListener {
-
+    
+    // declare variables used within the RegisterFragment class. 
+    // TAG is used for logging purposes, while the other variables represent UI components like EditText, Button, and TextView. 
+    // ProgressDialog and SharedPreferences are used for displaying progress and storing data, respectively. 
+    // file_name represents the name of the PHP file used for registration.
     private static final String TAG = RegisterFragment.class.getSimpleName();
     private EditText email_et, name_et, password_et;
     private Button register_btn;
@@ -44,11 +51,15 @@ public class  RegisterFragment extends Fragment implements VolleyJsonResponseLis
 
     }
 
+    // method is overridden from the Fragment class and is called when the fragment is being created. 
+    // It is responsible for any initialization tasks specific to the fragment.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    // This method is overridden from the Fragment class and is responsible for creating and returning the fragment's view hierarchy. 
+    // In this case, it inflates the layout file fragment_register.xml and initializes the view components by calling the initView() method.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +68,8 @@ public class  RegisterFragment extends Fragment implements VolleyJsonResponseLis
         return view;
     }
 
+    // This method initializes the view components and sets up the necessary listeners. It retrieves the shared preferences and initializes a progress dialog. 
+    // The UI components (register button, login text view, email edit text, etc.) are also initialized by finding them in the inflated view hierarchy.
     private void initView(View view) {
         pref = getContext().getSharedPreferences(getString(R.string.pref_name),0);
         progressDialog  = new ProgressDialog(getActivity()); // ??      getContext()
@@ -178,6 +191,8 @@ public class  RegisterFragment extends Fragment implements VolleyJsonResponseLis
         });
     }
 
+    // This method performs validation checks on the email, name, and password entered by the user. 
+    // It ensures that the fields are not empty and that the email follows a specific pattern.
     private boolean checkParameters(String email, String name, String password) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -210,7 +225,8 @@ public class  RegisterFragment extends Fragment implements VolleyJsonResponseLis
         return true;
     }
 
-
+    // This method is responsible for navigating to the login fragment when the user clicks on the login text view. 
+    // It replaces the current fragment with a new instance of the LoginFragment.
     private void goToLogin() {
         Fragment login_fragment = new LoginFragment();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
@@ -218,6 +234,8 @@ public class  RegisterFragment extends Fragment implements VolleyJsonResponseLis
         ft.commit();
     }
 
+    // This method is overridden from the VolleyJsonResponseListener interface and is called when a JSON response is received successfully. 
+    // It handles the response and takes appropriate actions based on the data.
     @Override
     public void onSuccessJson(String response, String type) {
         try {
@@ -263,18 +281,23 @@ public class  RegisterFragment extends Fragment implements VolleyJsonResponseLis
 
     }
 
+    // This method is overridden from the VolleyJsonResponseListener interface and is called when a JSON request fails. 
+    // It handles the failure and takes appropriate actions based on the response code and message.
     @Override
     public void onFailureJson(int responseCode, String responseMessage) {
 
     }
 
+    // This method is responsible for navigating to the profile fragment after successful registration. 
+    // It replaces the current fragment with a new instance of the ProfileFragment.
     private void goToProfile() {
         Fragment profile_fragment = new ProfileFragment();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         ft.replace(R.id.fragment_frame, profile_fragment);
         ft.commit();
     }
-
+    
+    // These methods are used to show and hide the progress dialog, respectively, when needed.
     private void showProgressDialog() {
         if (!progressDialog.isShowing())
             progressDialog.show();
