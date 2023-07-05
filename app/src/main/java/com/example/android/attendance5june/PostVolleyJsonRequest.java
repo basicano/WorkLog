@@ -1,5 +1,6 @@
 package com.example.android.attendance5june;
 
+//  import necessary classes and libraries for making network requests using Volley and working with JSON objects.
 import android.app.Activity;
 import android.util.Log;
 
@@ -19,6 +20,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+// define a class named PostVolleyJsonRequest that encapsulates the functionality for making a POST request using Volley and handling JSON responses. 
+// It includes member variables to store the type of request, the activity, the listener for response callbacks, the network URL, a JSON object, and parameters for the request.
 public class PostVolleyJsonRequest {
     public static final String TAG = PostVolleyJsonRequest.class.getSimpleName();
 
@@ -30,6 +33,8 @@ public class PostVolleyJsonRequest {
     private JSONObject jsonObject = null;
     Map<String, String> params = new HashMap<>();
 
+    // This is the constructor of the PostVolleyJsonRequest class. 
+    // It initializes the member variables with the provided values and then calls the requestCall() method to initiate the network request.
     public PostVolleyJsonRequest(Activity activity, VolleyJsonResponseListener volleyJsonResponseListener,
                                  String type, String file_name, Map<String, String> params) {         // type specifies the process or activity that is making the network request
         this.activity = activity;
@@ -42,8 +47,11 @@ public class PostVolleyJsonRequest {
         requestCall();
     }
 
+    // This is the requestCall() method. 
+    // It creates a new instance of RequestQueue using Volley, and then creates a StringRequest object to make a POST request to the specified networkURL. 
+    // It sets up response listeners to handle success and failure cases. 
+    // The getParams() method is overridden to provide the request parameters. Finally, the request is added to the request queue and started.
     void requestCall(){
-
         RequestQueue requestQueue ;
         requestQueue = Volley.newRequestQueue(activity);
 //        Cache cache = new DiskBasedCache(activity.getCacheDir(), 1024 * 1024);
