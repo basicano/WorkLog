@@ -147,6 +147,9 @@ public class QRCodeScanner extends Activity implements VolleyJsonResponseListene
         }
     }
 
+    // The readQRCode method initializes the qrEader instance and configures it with the provided QRDataListener. 
+    // The QRDataListener listens for detected QR codes. When a QR code is detected, the listener's onDetected method is called. 
+    // Inside this method, the scanned QR code data is decoded, processed, and appropriate actions are performed.
     private void readQRCode() {
         qrEader = new QREader.Builder(this, mySurfaceView, new QRDataListener() {
 
@@ -198,6 +201,8 @@ public class QRCodeScanner extends Activity implements VolleyJsonResponseListene
         qrEader.initAndStart(mySurfaceView);
     }
 
+    // The onSuccessJson method is implemented from the VolleyJsonResponseListener interface. It is called when a successful JSON response is received from a network request made using Volley library. 
+    // It processes the response, extracts relevant data, and performs actions accordingly. It also updates the shared preferences and starts a new activity.
     @Override
     public void onSuccessJson(String response, String type) {
         Log.v("MarkAttendance 11 ", "onSuccessJson 11 = " + response);
