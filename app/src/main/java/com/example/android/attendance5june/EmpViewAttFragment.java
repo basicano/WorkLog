@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+
+// defines a class named EmpViewAttFragment that extends the Fragment class and implements the VolleyJsonResponseListener interface. 
+// The TAG variable is declared as a constant with the value of the class name.
 public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseListener {
     private static final String TAG = EmpViewAttFragment.class.getSimpleName();
 
@@ -66,7 +69,8 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
         super.onCreate(savedInstanceState);
     }
 
-
+    // This method is overridden from the Fragment class and is responsible for creating and returning the fragment's view hierarchy. 
+    // In this case, it inflates the layout file fragment_emp_view_att.xml and initializes the view components by calling the initView() method.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mainTabView = inflater.inflate(R.layout.fragment_emp_view_att,container,false);
@@ -74,7 +78,11 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
         return mainTabView;
     }
 
+    // This method initializes the UI components, progress dialog, and other variables. 
+    // It sets up listeners for the calendar view, retrieves and displays attendance records based on selected dates, and handles JSON responses.
     private void initView(View view) {
+
+        // Initialize UI components and variables
         selected_date = (TextView)  view.findViewById(R.id.selected_date);
         status_et = (TextView) view.findViewById(R.id.status_et);
         in_time_et = (TextView) view.findViewById(R.id.inTime_et);
@@ -83,36 +91,43 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Please Wait");
 
+        // Set the current date in the selected_date TextView
         selected_date.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
 
+        // Load SharedPreferences and preferences
         pref = getActivity().getSharedPreferences(getString(R.string.pref_name), 0);
         PrefsUserInfo.getInstance().loadPreferences(getActivity());
 
-
+        // Get a reference to the CalendarView
         calendarView = (CalendarView) view.findViewById(R.id.calendarView);
 
+        // Set a listener for when the calendar view moves to the next month
         calendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener(){
-
             @Override
             public void onChange() {
+                // Update the calendar to the next month and retrieve attendance records for that month
                 Log.d(TAG, "Reached in onChange() in CalenderView setOnForwardPageChangeListener Listeners ");
                 calendar.set(calendar.MONTH,  calendar.get( calendar.MONTH ) + 1);
                 getAttListByDate(getFirstDate(calendar.DAY_OF_MONTH, calendar), getLastDate(calendar.DAY_OF_MONTH, calendar));
             }
         });
 
+        // Set a listener for when the calendar view moves to the previous month
         calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
+                // Update the calendar to the previous month and retrieve attendance records for that month
                 Log.d(TAG, "Reached in onChange() in CalenderView setOnPreviousPageChangeListener Listeners ");
                 calendar.set(calendar.MONTH,  calendar.get( calendar.MONTH ) - 1);
                 getAttListByDate(getFirstDate(calendar.DAY_OF_MONTH, calendar), getLastDate(calendar.DAY_OF_MONTH, calendar));
             }
         });
 
+        // Set a listener for when a day is clicked on the calendar view
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
+                // Handle the click event
                 Log.d(TAG, "Reached in onDayClick() in CalenderView Listeners ");
 
                 Calendar cal = eventDay.getCalendar();
@@ -122,6 +137,7 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
                 String curr_date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                 Date date_s, date_c;
                 try {
+                    // Compare the selected date with the current date
                     date_s = dateFormat.parse(sel_date);                                     // when this date is parsed the time is 00:00
                     date_c = dateFormat.parse(curr_date);
                     long difference = date_s.getTime() - date_c.getTime();
@@ -130,11 +146,13 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
                     Log.e(TAG, "Diff - "+dayDifference);
 
                     if(differenceDates>0){
+                        // If the selected date is in the future, display placeholders
                         status_et.setText("---");
                         in_time_et.setText("---");
                         outime_et.setText("---");
                     }
                     else{
+                        // If the selected date is in the past, retrieve attendance records
                         showProgressDialog();
                         Map<String, String> params = new HashMap<>();
                         params.put("email", pref.getString(PrefsUserInfo.PREF_EMAIL, ""));
@@ -142,6 +160,8 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
                         params.put("type", "getRecord");
 
                         Log.e("params -->> ", params.toString());
+
+                        // Send a POST request to retrieve attendance records
                         new PostVolleyJsonRequest(getActivity(), EmpViewAttFragment.this,
                                 "getRecord", "getAttRecord.php", params);
                     }
@@ -151,10 +171,13 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
             }
         });
 
+        // Retrieve attendance records for the current month
         getAttListByDate(getFirstDate(calendar.DAY_OF_MONTH, calendar), getLastDate(calendar.DAY_OF_MONTH, calendar));
+        // Retrieve attendance records for the current date
         getRecordByDate(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
     }
 
+    
     private void getRecordByDate(String date){
         Log.d(TAG, "Reached in getRecordByDate()");
         showProgressDialog();
@@ -191,6 +214,8 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
         return new java.text.SimpleDateFormat(pattern).format(date); //java.text.DateFormat.getDateTimeInstance().format(ts.getTime())
     }
 
+    // This method is overridden from the VolleyJsonResponseListener interface and is called when a JSON response is received successfully. 
+    // It handles the response and takes appropriate actions based on the data.
     @Override
     public void onSuccessJson(String response, String type) {
         Log.d(TAG, "Reached in onSuccessJson() "+response);
@@ -256,6 +281,7 @@ public class  EmpViewAttFragment extends Fragment implements VolleyJsonResponseL
         return cal;
     }
 
+    // This method is overridden from the VolleyJsonResponseListener interface and is called when a JSON request fails. It handles the failure and takes appropriate actions based on the response code and message.
     @Override
     public void onFailureJson(int responseCode, String responseMessage) {
         hideProgressDialog();
