@@ -39,8 +39,11 @@ public class QREader {
     private boolean cameraRunning = false;
     private boolean surfaceCreated = false;
 
+    // initializing and starting the QR code reader.
     public void initAndStart(final SurfaceView surfaceView) {
 
+        // the addOnGlobalLayoutListener method, the initialization and starting of the QR code reader are deferred until the surfaceView has finished its layout. 
+        // This is useful to ensure that the surfaceView is properly set up and ready to display the camera preview before starting the scanning process.
         surfaceView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -52,6 +55,8 @@ public class QREader {
                 });
     }
 
+    // utility method used to remove the OnGlobalLayoutListener from a ViewTreeObserver of a given View
+    // reason for removing the listener is to avoid unnecessary callbacks and improve performance. 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -61,6 +66,7 @@ public class QREader {
         }
     }
 
+    // used to handle events related to the SurfaceHolder, which represents the underlying surface of a SurfaceView.
     private final SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -141,84 +147,13 @@ public class QREader {
                     // Handled via public method
                 }
 
+                // called when new barcode detections are available
                 @Override
                 public void receiveDetections(Detector.Detections<Barcode> detections) {
                     final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                    // Log.i("AAA  ", String.valueOf(barcodes));
                     if (barcodes.size() != 0 && qrDataListener != null) {
                         qrDataListener.onDetected(barcodes.valueAt(0).displayValue, barcodes.valueAt(0).rawValue);
-                        //qrDataListener.onDetected(barcodes.valueAt(0).displayValue, barcodes.valueAt(0).email, barcodes.valueAt(0).phone);
-                        //Log.i("QR All Data : ", barcodes.valueAt(0).displayValue.toString() + " " + barcodes.valueAt(0).email.toString() + " " + barcodes.valueAt(0).phone.toString());
-
-                        //Barcode thisCode = barcodes.valueAt(0);
-                        //Log.i("KD QR ", thisCode.rawValue);
-                        /// Output
-            /*KD QR: BEGIN:VCARD
-            VERSION:3.0
-            N:kaushal
-            EMAIL;TYPE=INTERNET:abc@gmail.com
-            END:VCARD*/
-
-            /*for (int i = 0; i < barcodes.size(); i++) {
-            Barcode barcode = barcodes.get(barcodes.keyAt(i));
-            String value = barcode.displayValue;
-            Log.i("value   ", value);
-            Log.i("email   ", barcode.email.toString());
-            Log.i("phone   ", barcode.phone.toString());
-            }*/
-                        // https://www.mytrendin.com/read-qr-barcode-using-android-mobile-vision-api/
                     }
-
-
-
-        /*Log.i("Hello",""+barcodes.size());
-        for (int index = 0; index < barcodes.size(); index++) {
-        Barcode code = barcodes.valueAt(index);
-        int type = barcodes.valueAt(index).valueFormat;
-
-        switch (type) {
-          case Barcode.CONTACT_INFO:
-            Log.i("AA", code.contactInfo.title);
-            break;
-          case Barcode.EMAIL:
-            Log.i("AA", code.email.address);
-            break;
-          case Barcode.ISBN:
-            Log.i("AA", code.rawValue);
-            break;
-          case Barcode.PHONE:
-            Log.i("AA", code.phone.number);
-            break;
-          case Barcode.PRODUCT:
-            Log.i("AA", code.rawValue);
-            break;
-          case Barcode.SMS:
-            Log.i("AA", code.sms.message);
-            break;
-          case Barcode.TEXT:
-            Log.i("AA", code.rawValue);
-            break;
-          case Barcode.URL:
-            Log.i("AA", "url: " + code.url.url);
-            break;
-          case Barcode.WIFI:
-            Log.i("AA", code.wifi.ssid);
-            break;
-          case Barcode.GEO:
-            Log.i("AA", code.geoPoint.lat + ":" + code.geoPoint.lng);
-            break;
-          case Barcode.CALENDAR_EVENT:
-            Log.i("AA", code.calendarEvent.description);
-            break;
-          case Barcode.DRIVER_LICENSE:
-            Log.i("AA", code.driverLicense.licenseNumber);
-            break;
-          default:
-            Log.i("AA", code.rawValue);
-            break;
-        }
-        }*/
-
 
                 }
             });
