@@ -28,20 +28,26 @@ import java.util.regex.Pattern;
 public class LoginFragment extends Fragment implements VolleyJsonResponseListener {
     public static final String TAG = LoginFragment.class.getSimpleName();
 
+    // These lines declare variables used within the LoginFragment class. 
+    // They represent UI components like Button, EditText, and TextView. 
     private Button login_btn;
     private EditText email_et, password_et;
-
     private TextView register_tv;
+    
+    // SharedPreferences is used for storing data, and ProgressDialog is used for displaying progress. 
     private SharedPreferences pref;
 
 
     ProgressDialog progressDialog;
+    // file_name represents the name of the PHP file used for login.
     private String file_name = "login.php";
 
     public LoginFragment() {
         // Required empty public constructor
     }
 
+    // This method is overridden from the Fragment class and is called when the fragment is being created. 
+    // It is responsible for any initialization tasks specific to the fragment.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,8 @@ public class LoginFragment extends Fragment implements VolleyJsonResponseListene
         return view;
     }
 
+    // This method is overridden from the Fragment class and is responsible for creating and returning the fragment's view hierarchy. 
+    // In this case, it inflates the layout file fragment_login.xml and initializes the view components by calling the initView() method.
     public void initView(View view){
         pref = getContext().getSharedPreferences(PrefsUserInfo.PREF_FILE_NAME,0);
 
@@ -161,7 +169,9 @@ public class LoginFragment extends Fragment implements VolleyJsonResponseListene
             }
         });
     }
-
+    
+    // This method performs validation checks on the email and password entered by the user. 
+    // It ensures that the fields are not empty and that the email follows a specific pattern.
     private boolean checkParameters(String email, String password) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -189,6 +199,8 @@ public class LoginFragment extends Fragment implements VolleyJsonResponseListene
         return true;
     }
 
+    // This method is responsible for navigating to the register fragment when the user clicks on the register text view. 
+    // It replaces the current fragment with a new instance of the RegisterFragment.
     private void goToRegister() {
         Fragment register = new RegisterFragment();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
@@ -196,6 +208,8 @@ public class LoginFragment extends Fragment implements VolleyJsonResponseListene
         ft.commit();
     }
 
+    // This method is overridden from the VolleyJsonResponseListener interface and is called when a JSON response is received successfully. 
+    // It handles the response and takes appropriate actions based on the data.
     @Override
     public void onSuccessJson(String response, String type) {
         try {
@@ -259,19 +273,25 @@ public class LoginFragment extends Fragment implements VolleyJsonResponseListene
         ft.commit();
     }
 
+    // This method is responsible for navigating to the admin profile fragment after successful login. 
+    // It replaces the current fragment with a new instance of the ProfileFragment.
     private void goToProfile() {
         Fragment profile_fragment = new ProfileFragment();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
         ft.replace(R.id.fragment_frame, profile_fragment);
         ft.commit();
     }
-
+    
+    // This method is overridden from the VolleyJsonResponseListener interface and is called when a JSON request fails. 
+    // It handles the failure and takes appropriate actions based on the response code and message.
     @Override
     public void onFailureJson(int responseCode, String responseMessage) {
         hideProgressDialog();
         Log.v( TAG, responseMessage );
         Toast.makeText(getActivity(), "error occurred ",Toast.LENGTH_SHORT).show();
     }
+
+    // These methods are used to show and hide the progress dialog, respectively, when needed.
     private void showProgressDialog() {
         if (!progressDialog.isShowing())
             progressDialog.show();
